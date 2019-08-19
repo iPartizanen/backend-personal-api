@@ -12,7 +12,7 @@ export class Staff {
     async login() {
         const { email, password } = this.data;
         const { hash, password: userPassword } = await staff
-            .findOne({ email })
+            .findOne({ emails: {$elemMatch: {email} } })
             .select('password hash')
             .lean();
 
@@ -23,5 +23,20 @@ export class Staff {
         }
 
         return hash;
+    }
+
+    async create() {
+        const data = await staff.create(this.data);
+
+        return data;
+    }
+
+    async getAll() {
+        const data = await staff
+            .find({})
+            .select('-__v -id')
+            .lean();
+
+        return { data };
     }
 }

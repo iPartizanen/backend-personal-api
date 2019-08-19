@@ -1,15 +1,30 @@
 // Core
-import express from 'express';
+import dg from 'debug';
 
 // Instruments
-import { limiter } from '../../helpers';
+import { Staff } from '../../controllers';
 
-// Handlers
-import * as authenticate from './';
+const debug = dg('router:auth');
 
-const route = express.Router();
-const timeout = 5 * 60 * 1000; // 5 min
+export const post = async (req, res) => {
+    debug(`${req.method} — ${req.originalUrl}`);
 
-route.post('/login', [ limiter(3, timeout) ], authenticate.post);
+    try {
+        if (!req.headers.authorization) {
+            throw new Error('credentials are not valid');
+        }
 
-export { route as auth };
+        const [ , credentials ] = req.headers.authorization.split(' ');
+        const [ email, password ] = Buffer.from(credentials, 'base64')
+            .toString()
+            .split(':');
+
+        const staff = new Staff({ email, password });
+        const hash = await staff.login();
+
+        req.session.user = { hash };
+        res.sendStatus(204);
+    } catch (error) {
+        res.status(401).json({ message: error.message });
+    }
+};
