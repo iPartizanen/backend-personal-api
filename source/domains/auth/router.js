@@ -20,9 +20,8 @@ export const post = async (req, res) => {
             .split(':');
 
         const staff = new Staff({ email, password });
-        const hash = await staff.login();
-
-        req.session.user = { hash };
+        const userAuth = await staff.login();
+        req.session.user = userAuth;
         res.sendStatus(204);
     } catch (error) {
         res.status(401).json({ message: error.message });

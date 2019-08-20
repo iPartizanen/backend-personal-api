@@ -11,9 +11,9 @@ export class Staff {
 
     async login() {
         const { email, password } = this.data;
-        const { hash, password: userPassword } = await staff
+        const { hash, password: userPassword, role } = await staff
             .findOne({ emails: {$elemMatch: {email} } })
-            .select('password hash')
+            .select('password hash role')
             .lean();
 
         const match = await bcrypt.compare(password, userPassword);
@@ -22,10 +22,15 @@ export class Staff {
             throw new Error('Credentials are not valid');
         }
 
-        return hash;
+        return { hash, role };
     }
 
     async create() {
+        const { password } = this.data;
+        if (!password) {
+            const initialPassword = '#Aa111111';
+            this.data.password = await bcrypt.hash(initialPassword, 5);
+        }
         const data = await staff.create(this.data);
 
         return data;
