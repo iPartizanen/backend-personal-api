@@ -2,7 +2,7 @@
 import dg from 'debug';
 
 // Instruments
-import { Staff } from '../../controllers';
+import { Staff, Customers } from '../../controllers';
 
 const debug = dg('router:auth');
 
@@ -20,7 +20,14 @@ export const post = async (req, res) => {
             .split(':');
 
         const staff = new Staff({ email, password });
-        const userAuth = await staff.login();
+        let userAuth = await staff.login();
+        if (!userAuth) {
+            const customers = new Customers({ email, password });
+            userAuth = await customers.login();
+            if (!userAuth) {
+                throw new Error('credentials are not valid');
+            }
+        }
         req.session.user = userAuth;
         res.sendStatus(204);
     } catch (error) {

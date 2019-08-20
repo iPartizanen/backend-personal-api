@@ -11,18 +11,18 @@ export class Staff {
 
     async login() {
         const { email, password } = this.data;
-        const { hash, password: userPassword, role } = await staff
+        const staffPerson = await staff
             .findOne({ emails: {$elemMatch: {email} } })
             .select('password hash role')
             .lean();
 
-        const match = await bcrypt.compare(password, userPassword);
-
-        if (!match) {
-            throw new Error('Credentials are not valid');
+        if (staffPerson) {
+            const { hash, password: userPassword, role } = staffPerson;
+            const match = await bcrypt.compare(password, userPassword);
+            if (match) {
+                return { hash, role };
+            }
         }
-
-        return { hash, role };
     }
 
     async create() {
