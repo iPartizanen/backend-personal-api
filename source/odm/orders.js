@@ -1,11 +1,19 @@
 // Core
 import mongoose from 'mongoose';
+import v4 from 'uuid/v4';
 
 // Instruments
 import { products, customers } from './';
 
 // Document shape
 const schema = new mongoose.Schema({
+    hash: {
+        type:     String,
+        required: true,
+        unique:   true,
+        index:    true,
+        default:  () => v4(),
+    },
     uid: {
         type:     mongoose.SchemaTypes.ObjectId,
         ref:      customers,
