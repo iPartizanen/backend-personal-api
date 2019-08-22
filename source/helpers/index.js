@@ -5,3 +5,4 @@ export { requireJsonContent } from './requireJsonContent';
 export { devLogger, errorLogger, notFoundLogger, validationLogger } from './loggers';
 export { ValidationError, NotFoundError } from './errors';
 export { getPort, getPassword, getDbName, getDbUrl } from './env';
+export { hashPlugin } from './hashPlugin';

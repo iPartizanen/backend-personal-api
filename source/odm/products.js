@@ -1,16 +1,8 @@
 // Core
 import mongoose from 'mongoose';
-import v4 from 'uuid/v4';
 
 // Document shape
 const schema = new mongoose.Schema({
-    hash: {
-        type:     String,
-        required: true,
-        unique:   true,
-        index:    true,
-        default:  () => v4(),
-    },
     title: {
         type:     String,
         required: true,

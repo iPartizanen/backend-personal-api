@@ -1,6 +1,5 @@
 // Core
 import mongoose from 'mongoose';
-import v4 from 'uuid/v4';
 
 const emailSchema = new mongoose.Schema({
     email: {
@@ -17,13 +16,6 @@ const phoneSchema = new mongoose.Schema({
 
 // Parent document shape
 const userSchema = new mongoose.Schema({
-    hash: {
-        type:     String,
-        required: true,
-        unique:   true,
-        index:    true,
-        default:  () => v4(),
-    },
     name: {
         first: {
             type:     String,
