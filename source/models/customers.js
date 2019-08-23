@@ -83,4 +83,19 @@ export class Customers {
 
         return data;
     }
+
+    async getById() {
+        const { _id } = this.data;
+
+        const data = await customers
+            .findOne({ _id })
+            .select('-__v -id')
+            .lean();
+
+        if (!data) {
+            throw new NotFoundError(`Can not find customer with ID=${_id}`);
+        }
+
+        return data;
+    }
 }

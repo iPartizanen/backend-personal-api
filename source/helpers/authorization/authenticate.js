@@ -1,5 +1,5 @@
 // Instruments
-import { NotFoundError } from './';
+import { NotFoundError } from '../';
 
 export const authenticate = (req, res, next) => {
     if (!req.session.user) {

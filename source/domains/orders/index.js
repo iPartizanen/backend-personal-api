@@ -11,8 +11,8 @@ export const router = express.Router();
 router.get('/', [ authenticate ], get);
 router.post('/', [ authenticate ], post);
 
-router.get('/:productHash', [ authenticate ], getByHash);
-router.put('/:productHash', [ authenticate ], updateByHash);
-router.delete('/:productHash', [ authenticate ], removeByHash);
+router.get('/:orderHash', [ authenticate ], getByHash);
+router.put('/:orderHash', [ authenticate ], updateByHash);
+router.delete('/:orderHash', [ authenticate ], removeByHash);
 
 export { router as orders };

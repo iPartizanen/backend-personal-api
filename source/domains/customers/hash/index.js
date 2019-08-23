@@ -10,8 +10,8 @@ export const getByHash = async (req, res) => {
     debug(`${req.method} - ${req.originalUrl}`);
 
     try {
-        const { productHash } = req.params;
-        const model = new Customers({ hash: productHash });
+        const { customerHash } = req.params;
+        const model = new Customers({ hash: customerHash });
         const data = await model.getByHash();
 
         res.status(200).json({ data });
@@ -24,8 +24,8 @@ export const updateByHash = async (req, res) => {
     debug(`${req.method} - ${req.originalUrl}`);
 
     try {
-        const { productHash } = req.params;
-        const model = new Customers({ hash: productHash, payload: req.body });
+        const { customerHash } = req.params;
+        const model = new Customers({ hash: customerHash, payload: req.body });
         const data = await model.updateByHash();
 
         res.status(200).json({ data });
@@ -38,8 +38,8 @@ export const removeByHash = async (req, res) => {
     debug(`${req.method} - ${req.originalUrl}`);
 
     try {
-        const { productHash } = req.params;
-        const model = new Customers({ hash: productHash });
+        const { customerHash } = req.params;
+        const model = new Customers({ hash: customerHash });
 
         await model.removeByHash();
 

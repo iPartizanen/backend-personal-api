@@ -60,4 +60,19 @@ export class Products {
 
         return data;
     }
+
+    async getById() {
+        const { _id } = this.data;
+
+        const data = await products
+            .findOne({ _id })
+            .select('-__v -id')
+            .lean();
+
+        if (!data) {
+            throw new NotFoundError(`Can not find product with ID=${_id}`);
+        }
+
+        return data;
+    }
 }

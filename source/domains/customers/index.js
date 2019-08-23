@@ -4,15 +4,15 @@ import express from 'express';
 // Instruments
 import { get, post } from './router';
 import { getByHash, updateByHash, removeByHash } from './hash';
-import { authenticate } from '../../helpers';
+import { staffOnly, userOnly } from '../../helpers';
 
 export const router = express.Router();
 
-router.get('/', [ authenticate ], get);
+router.get('/', [ staffOnly ], get);
 router.post('/', post);
 
-router.get('/:productHash',  [ authenticate ], getByHash);
-router.put('/:productHash', [ authenticate ], updateByHash);
-router.delete('/:productHash', [ authenticate ], removeByHash);
+router.get('/:customerHash',  [ userOnly ], getByHash);
+router.put('/:customerHash', [ userOnly ], updateByHash);
+router.delete('/:customerHash', [ userOnly ], removeByHash);
 
 export { router as customers };

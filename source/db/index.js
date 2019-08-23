@@ -24,31 +24,6 @@ const mongooseOptions = {
 // mongodb://username:password@localhost:27017/users
 const connection = mongoose.connect(`mongodb://${DB_URL}:27017/${DB_NAME}`, mongooseOptions);
 
-// const __userSchema = new mongoose.Schema({
-//     name: String,
-// });
-// const __productsSchema = new mongoose.Schema({
-//     product: String,
-// });
-
-// const __user = mongoose.model('customers', __userSchema);
-// const __product = mongoose.model('products', __productsSchema);
-
-// try {
-//     const __userData = __user.create({
-//         name: 'John',
-//     });
-//     const __productData = __product.create({
-//         product: 'Oranges',
-//     });
-
-//     console.log(__userData);
-//     console.log('================================================');
-//     console.log(__productData);
-// } catch ({ name, message }) {
-//     console.error(`${name}: ${message}`);
-// }
-
 connection
     .then(() => {
         debug(`DB '${DB_NAME}' connected`);
