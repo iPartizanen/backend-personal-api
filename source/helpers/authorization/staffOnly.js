@@ -11,7 +11,7 @@ export const staffOnly = (req, res, next) => {
         next();
     } else {
         res.status(401).json({
-            message: 'you are not authorized to perform this operation',
+            message: 'only staff can perform this operation',
         });
     }
 };

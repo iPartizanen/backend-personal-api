@@ -7,12 +7,12 @@ const emailSchema = new mongoose.Schema({
         unique: true,
     },
     primary: Boolean,
-});
+}, { _id: false });
 
 const phoneSchema = new mongoose.Schema({
     phone:   String,
     primary: Boolean,
-});
+}, { _id: false });
 
 // Parent document shape
 const userSchema = new mongoose.Schema({

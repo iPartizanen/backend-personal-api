@@ -26,20 +26,42 @@ export class Staff {
     }
 
     async create() {
-        const { password } = this.data;
+        let password = this.data.password; // should be encrypted
         if (!password) {
-            const initialPassword = '#Aa111111';
-            this.data.password = await bcrypt.hash(initialPassword, 5);
+            password = await bcrypt.hash('#Aa111111', 5);
         }
-        const data = await staff.create(this.data);
 
-        return data;
+        const [ first, last ] =  this.data.name.split(' ');
+        const newStaff = {
+            name: {
+                first,
+                last,
+            },
+            phones: [
+                {
+                    phone:   this.data.phone,
+                    primary: true,
+                },
+            ],
+            emails: [
+                {
+                    email:   this.data.email,
+                    primary: true,
+                },
+            ],
+            password,
+            role: this.data.role,
+        };
+
+        const { hash } = await staff.create(newStaff);
+
+        return { hash };
     }
 
     async getAll() {
         const data = await staff
             .find({})
-            .select('-__v -id')
+            .select('-__v -_id -__t -hash -created -modified -disabled')
             .lean();
 
         return { data };

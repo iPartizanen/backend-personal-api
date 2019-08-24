@@ -26,20 +26,43 @@ export class Customers {
     }
 
     async create() {
-        const { password } = this.data;
+        let password = this.data.password; // should be encrypted
         if (!password) {
-            const initialPassword = '#Aa111111';
-            this.data.password = await bcrypt.hash(initialPassword, 5);
+            password = await bcrypt.hash('#Aa111111', 5);
         }
-        const data = await customers.create(this.data);
 
-        return data;
+        const [ first, last ] =  this.data.name.split(' ');
+        const newCustomer = {
+            name: {
+                first,
+                last,
+            },
+            phones: [
+                {
+                    phone:   this.data.phone,
+                    primary: true,
+                },
+            ],
+            emails: [
+                {
+                    email:   this.data.email,
+                    primary: true,
+                },
+            ],
+            password,
+            city:    this.data.city,
+            country: this.data.country,
+        };
+
+        const { hash } = await customers.create(newCustomer);
+
+        return { hash };
     }
 
     async getAll() {
         const data = await customers
             .find({})
-            .select('-__v -id')
+            .select('-__v -_id -__t -hash -created -modified -city -country')
             .lean();
 
         return { data };

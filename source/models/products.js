@@ -8,15 +8,15 @@ export class Products {
     }
 
     async create() {
-        const data = await products.create(this.data);
+        const { hash } = await products.create(this.data);
 
-        return data;
+        return { hash };
     }
 
     async getAll() {
         const data = await products
             .find({})
-            .select('-__v -id')
+            .select('-__v -id -hash -total -created -modified')
             .lean();
 
         return { data };
