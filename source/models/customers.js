@@ -73,7 +73,7 @@ export class Customers {
 
         const data = await customers
             .findOne({ hash })
-            .select('-__v -id')
+            .select('-__v -_id -__t -city -country -hash -created -modified')
             .lean();
 
         if (!data) {
@@ -86,13 +86,48 @@ export class Customers {
     async updateByHash() {
         const { hash, payload } = this.data;
 
+        const oldCustomer = await customers
+            .findOne({ hash })
+            .select('phones emails')
+            .lean();
+
+        if (!oldCustomer) {
+            throw new NotFoundError(`Can not find customer with hash ${hash}`);
+        }
+
+        let { emails, phones } = oldCustomer;
+
+        payload.emails.forEach((modifier) => {
+            if (modifier.action === 'add'
+                && emails.every((elem) => elem.email !== modifier.email)) { 
+                emails.push({ email: modifier.email });  // add non-primary
+            } else if (modifier.action === 'remove') {
+                emails = emails.filter((elem) => elem.email !== modifier.email
+                    || elem.primary);  // remove except primary
+            }
+        });
+        payload.phones.forEach((modifier) => {
+            if (modifier.action === 'add'
+                && phones.every((elem) => elem.phone !== modifier.phone)) { 
+                phones.push({ phone: modifier.phone });  // add non-primary
+            } else if (modifier.action === 'remove') {
+                phones = phones.filter((elem) => elem.phone !== modifier.phone);
+            }
+        }); 
+        if (phones.every((elem) => !elem.primary) && phones.length > 0) {
+            phones[ 0 ].primary = true;
+        }
+        payload.emails = emails;
+        payload.phones = phones;
+        payload.modified = new Date();
+
         const data = await customers.findOneAndUpdate({ hash }, payload);
 
         if (!data) {
             throw new NotFoundError(`Can not find customer with hash ${hash}`);
         }
 
-        return data;
+        return this.getByHash();
     }
 
     async removeByHash() {
@@ -112,7 +147,7 @@ export class Customers {
 
         const data = await customers
             .findOne({ _id })
-            .select('-__v -id')
+            .select('-__v')
             .lean();
 
         if (!data) {

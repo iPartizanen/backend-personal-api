@@ -36,7 +36,10 @@ const userSchema = new mongoose.Schema({
         type:    Date,
         default: () => new Date(),
     },
-    modified: Date,
+    modified: {
+        type:    Date,
+        default: () => new Date(),
+    },
 });
 
 userSchema.index({ 'name.first': 1, 'name.last': 1 }, { name: 'flName' });

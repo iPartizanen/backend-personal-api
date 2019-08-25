@@ -27,7 +27,7 @@ export class Products {
 
         const data = await products
             .findOne({ hash })
-            .select('-__v -id')
+            .select('-__v -_id -hash -total -created -modified')
             .lean();
 
         if (!data) {
@@ -40,13 +40,15 @@ export class Products {
     async updateByHash() {
         const { hash, payload } = this.data;
 
+        payload.modified = new Date();
+
         const data = await products.findOneAndUpdate({ hash }, payload);
 
         if (!data) {
             throw new NotFoundError(`Can not find product with hash ${hash}`);
         }
 
-        return data;
+        return this.getByHash();
     }
 
     async removeByHash() {

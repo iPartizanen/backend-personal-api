@@ -13,10 +13,10 @@ export class Staff {
         const { email, password } = this.data;
         const staffPerson = await staff
             .findOne({ emails: {$elemMatch: {email} } })
-            .select('password hash role')
+            .select('password hash role disabled')
             .lean();
 
-        if (staffPerson) {
+        if (staffPerson && !staffPerson.disabled) {
             const { hash, password: userPassword, role } = staffPerson;
             const match = await bcrypt.compare(password, userPassword);
             if (match) {

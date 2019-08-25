@@ -25,7 +25,10 @@ const schema = new mongoose.Schema({
         type:    Date,
         default: () => new Date(),
     },
-    modified: Date,
+    modified: {
+        type:    Date,
+        default: () => new Date(),
+    },
 });
 
 // Collection

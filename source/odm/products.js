@@ -26,7 +26,10 @@ const schema = new mongoose.Schema({
         type:    Date,
         default: () => new Date(),
     },
-    modified: Date,
+    modified: {
+        type:    Date,
+        default: () => new Date(),
+    },
 });
 
 // schema.index({ hash: 1 }, { name: 'hash' });

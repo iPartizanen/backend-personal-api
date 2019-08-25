@@ -14,7 +14,6 @@ export const userOnly = (req, res, next) => {
     }
 
     const { customerHash } = req.params;
-
     if (hash === customerHash) {
         next();
     } else {
