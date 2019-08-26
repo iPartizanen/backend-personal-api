@@ -99,7 +99,7 @@ export class Customers {
 
         payload.emails.forEach((modifier) => {
             if (modifier.action === 'add'
-                && emails.every((elem) => elem.email !== modifier.email)) { 
+                && emails.every((elem) => elem.email !== modifier.email)) {
                 emails.push({ email: modifier.email });  // add non-primary
             } else if (modifier.action === 'remove') {
                 emails = emails.filter((elem) => elem.email !== modifier.email
@@ -108,12 +108,12 @@ export class Customers {
         });
         payload.phones.forEach((modifier) => {
             if (modifier.action === 'add'
-                && phones.every((elem) => elem.phone !== modifier.phone)) { 
+                && phones.every((elem) => elem.phone !== modifier.phone)) {
                 phones.push({ phone: modifier.phone });  // add non-primary
             } else if (modifier.action === 'remove') {
                 phones = phones.filter((elem) => elem.phone !== modifier.phone);
             }
-        }); 
+        });
         if (phones.every((elem) => !elem.primary) && phones.length > 0) {
             phones[ 0 ].primary = true;
         }
