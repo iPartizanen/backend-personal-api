@@ -36,8 +36,8 @@ export const updateCustomer = {
                 type:       'object',
                 properties: {
                     phone: {
-                        type:      'string',
-                        minLength: 7,
+                        type:    'string',
+                        pattern: '^\\+380\\d{9}$',
                     },
                     action: {
                         type: 'string',

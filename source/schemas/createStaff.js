@@ -10,16 +10,16 @@ export const createStaff = {
             format: 'email',
         },
         phone: {
-            type:      'string',
-            minLength: 7,
+            type:    'string',
+            pattern: '^\\+380\\d{9}$',
         },
         role: {
             type:      'string',
             minLength: 1,
         },
         password: {
-            type:      'string',
-            minLength: 8,
+            type:    'string',
+            pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})',
         },
     },
     required:             [ 'name', 'email', 'role' ],

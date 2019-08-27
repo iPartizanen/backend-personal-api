@@ -10,8 +10,8 @@ export const createCustomer = {
             format: 'email',
         },
         phone: {
-            type:      'string',
-            minLength: 7,
+            type:    'string',
+            pattern: '^\\+380\\d{9}$',
         },
         city: {
             type:      'string',
@@ -22,8 +22,8 @@ export const createCustomer = {
             minLength: 2,
         },
         password: {
-            type:      'string',
-            minLength: 8,
+            type:    'string',
+            pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})',
         },
     },
     required:             [ 'name', 'email' ],
